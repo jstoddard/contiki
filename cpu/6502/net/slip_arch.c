@@ -69,7 +69,13 @@ void
 slip_arch_writeb(unsigned char c)
 {
   while(ser_put(c) == SER_ERR_OVERFLOW)
-    ;
+    /* The 6551 doesn't allow to send while receive(!) flow control is set.
+     * This behavior can easily result in a dead-lock right here. Therefore
+     * we need to empty the low level input buffer in order to have receive
+     * flow control cleared - even if this results in the high level input
+     * buffer 'rxbuf' to overflow and thus a SLIP packet to be discarded.
+     */
+    slip_arch_poll();
 }
 /*---------------------------------------------------------------------------*/
 void
