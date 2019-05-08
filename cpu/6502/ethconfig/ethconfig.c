@@ -1,3 +1,4 @@
+#include <cc65.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,24 +6,25 @@
 #include "cfs/cfs.h"
 
 static struct {
-  char     *screen;
-  uint16_t address;
-  char     *driver;
+  char *screen;
+  char *driver;
 } drivers[] = {
 #ifdef __APPLE2__
-  {"Uthernet",    0xC080, "cs8900a.eth" },
-  {"Uthernet II", 0xC084, "w5100.eth"   },
-  {"LANceGS",     0xC080, "lan91c96.eth"}
+  {"Uthernet",    "cs8900a.eth" },
+  {"Uthernet II", "w5100.eth"   },
+  {"LANceGS",     "lan91c96.eth"}
 #endif
 #ifdef __ATARI__
-  {"Dragon Cart", 0xD500, "cs8900a.eth" }
+  {"Dragon Cart", "cs8900a.eth" },
+  {"Dracarys",    "w5100.eth"   }
 #endif
 #ifdef __CBM__
-  {"RR-Net",      0xDE08, "cs8900a.eth" },
-  {"TFE",         0xDE00, "cs8900a.eth" },
-  {"ETH64",       0xDE00, "lan91c96.eth"}
+  {"RR-Net",      "cs8900a.eth" },
+  {"ETH64",       "lan91c96.eth"}
 #endif
 };
+
+uint16_t param;
 
 uint8_t ipcfg[16];
 
@@ -34,7 +36,8 @@ choose(uint8_t max)
 
   do {
     printf("\n?");
-    val = getchar();
+    val = cgetc();
+    putchar(val);
   } while(val < '0' || val > max + '0');
 
   putchar('\n');
@@ -52,6 +55,10 @@ main(void)
   int f;
   uint8_t d;
 
+  if (doesclrscrafterexit()) {
+    atexit((void (*))cgetc);
+  }
+
   f = cfs_open("contiki.cfg", CFS_READ);
   if(f == -1) {
     printf("Loading Config - Error\n");
@@ -60,6 +67,7 @@ main(void)
   cfs_read(f, ipcfg, sizeof(ipcfg));
   cfs_close(f);
 
+  putchar('\n');
   for(d = 0; d < sizeof(drivers) / sizeof(drivers[0]); ++d) {
     printf("%d: %s\n", d + 1, drivers[d].screen);
   }
@@ -67,7 +75,14 @@ main(void)
 
 #ifdef __APPLE2__
   printf("Slot (1-7)\n");
-  drivers[d].address += choose(7) * 0x10;
+  param = choose(7);
+#endif
+
+#ifdef __ATARI__
+  if(d == 1) {
+    printf("PBI device ID (1-8)\n");
+    param = choose(8);
+  }
 #endif
 
   f = cfs_open("contiki.cfg", CFS_WRITE);
@@ -76,7 +91,7 @@ main(void)
     return;
   }
   cfs_write(f, ipcfg, sizeof(ipcfg));
-  cfs_write(f, &drivers[d].address, sizeof(drivers[d].address));
+  cfs_write(f, &param, sizeof(param));
   cfs_write(f, drivers[d].driver, strlen(drivers[d].driver));
   cfs_close(f);
 

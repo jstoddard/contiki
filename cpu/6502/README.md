@@ -12,7 +12,7 @@ format for Ethernet:
 - Bytes  5 -  8: Subnet Mask    (HiByte first)
 - Bytes  9 - 12: Default Router (HiByte first)
 - Bytes 13 - 16: DNS Server     (HiByte first)
-- Bytes 17 - 18: Ethernet card I/O address (LoByte first !)
+- Bytes 17 - 18: Ethernet card driver param (LoByte first !)
 - Bytes 19 - xx: Ethernet card driver name (ASCII / PETSCII)
 
 It has the following format for SLIP (based on RS232 driver coming with cc65):

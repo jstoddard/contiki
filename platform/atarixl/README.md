@@ -7,9 +7,10 @@ cpu/6502/README.md for further details.
 
 The following Atari XL Ethernet card is supported:
 
-- Dragon Cart: Use driver cs8900a.eth with address $D500.
+- Dragon Cart: cs8900a.eth
+- Dracarys:    w5100.eth
 
 The 'disk' make goal requires HiassofT's dir2atr program. It is available at
-http://www.horus.com/~hias/atari/ - either as source code (being part of the
+https://www.horus.com/~hias/atari/ - either as source code (being part of the
 'AtariSIO driver and utilities for Linux') or as Win32 binary program (being
 part of the 'Atari Tools for Win32').

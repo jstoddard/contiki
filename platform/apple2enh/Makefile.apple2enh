@@ -37,6 +37,8 @@ ifdef SLIP
   DEFINES += STATIC_DRIVER=a2e_ssc_ser
 endif
 
+ETHERNET_SOURCEFILES = cs8900a.S lan91c96.S w5100.S
+
 CONTIKI_TARGET_SOURCEFILES += pfs.S
 
 CONTIKI_CPU = $(CONTIKI)/cpu/6502
@@ -67,9 +69,7 @@ ifdef SLIP
 	java -jar $(AC) -p  contiki.dsk contiki.cfg    bin 0 < $(CONTIKI)/tools/6502/sample.cfg
 else
 	java -jar $(AC) -p  contiki.dsk contiki.cfg    bin 0 < $(CONTIKI)/tools/$(TARGET)/sample.cfg
-	java -jar $(AC) -p  contiki.dsk cs8900a.eth    rel 0 < cs8900a.eth
-	java -jar $(AC) -p  contiki.dsk lan91c96.eth   rel 0 < lan91c96.eth
-	java -jar $(AC) -p  contiki.dsk w5100.eth      rel 0 < w5100.eth
+	java -jar $(AC) -p  contiki.dsk cs8900a.eth    rel 0 < cs8900a.$(TARGET)
 endif
 ifeq ($(HTTPD-CFS),1)
 	java -jar $(AC) -p  contiki.dsk index.htm      bin 0 < httpd-cfs/index.htm

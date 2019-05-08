@@ -49,7 +49,7 @@ struct {
   uip_ipaddr_t resolvaddr;
   union {
     struct {
-      uint16_t addr;
+      uint16_t param;
 #ifndef STATIC_DRIVER
       char     name[12+1];
 #endif /* !STATIC_DRIVER */
@@ -113,9 +113,6 @@ config_read(char *filename)
 #else /* STATIC_DRIVER */
   log_message("Eth. Driver: ", config.ethernet.name);
 #endif /* STATIC_DRIVER */
-#if !WITH_SLIP
-  log_message("Driver Port: $", utoa(config.ethernet.addr, uip_buf, 16));
-#endif /* !WITH_SLIP */
 
   uip_sethostaddr(&config.hostaddr);
   uip_setnetmask(&config.netmask);

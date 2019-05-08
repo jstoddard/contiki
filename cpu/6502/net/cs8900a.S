@@ -41,7 +41,21 @@
 
 	; Ethernet address
 mac:	.byte	$00, $0E, $3A	; OUI of Cirrus Logic
-	.byte	$11, $11, $11
+	.ifdef __C64__
+	.byte	$64, $64, $64
+	.endif
+	.ifdef __C128__
+	.byte	$28, $28, $28
+	.endif
+	.ifdef __APPLE2__
+	.byte	$A2, $A2, $A2
+	.endif
+	.ifdef __ATARI__
+	.byte	$A8, $A8, $A8
+	.endif
+	.ifdef __VIC20__
+	.byte	$20, $20, $20
+	.endif
 
 	; Buffer attributes
 bufaddr:.res	2		; Address
@@ -74,7 +88,124 @@ cnt	:=	ptr4		; Frame length counter
 
 	.endif
 
+;=====================================================================
+
+	.ifdef __CBM__
+
+	.rodata
+
+	; Ethernet address
+rrnet:	.byte	$28, $CD, $4C	; OUI of Individual Computers
+	.byte	$FF		; Reserved for RR-Net
+
 ;---------------------------------------------------------------------
+
+	.if .defined (__C64__) .or .defined (__C128__)
+rxtxreg		:= $DE08
+txcmd		:= $DE0C
+txlen		:= $DE0E
+isq		:= $DE00
+packetpp	:= $DE02
+ppdata		:= $DE04
+	.endif
+
+	.ifdef __VIC20__
+rxtxreg		:= $9808
+txcmd		:= $980C
+txlen		:= $980E
+isq		:= $9800
+packetpp	:= $9802
+ppdata		:= $9804
+	.endif
+
+;---------------------------------------------------------------------
+
+	.code
+
+init:
+	; Activate C64 RR clockport in order to operate RR-Net
+	; (RR config register overlays unused CS8900A ISQ register)
+	lda isq+1
+	ora #$01		; Set clockport bit
+	sta isq+1
+
+	; Check EISA registration number of Crystal Semiconductor
+	; PACKETPP = $0000, PPDATA == $630E ?
+	lda #$00
+	tax
+	jsr packetpp_ax
+	lda #$63^$0E
+	eor ppdata
+	eor ppdata+1
+	beq :+
+	sec
+	rts
+
+	; "When the RR-Net MK3 is used in cartridge mode, the EEPROM will serve as a
+	;  regular 8k ROM cartridge. It is used as a startup-ROM if the unit is plugged
+	;  directly to a C64. The startup code will initialize the MAC address."
+	; PACKETPP = $0158, PPDATA == RR-Net[0], RR-Net[1] ?
+	; PACKETPP = $015A, PPDATA == RR-Net[2], RR-Net[3] ?
+	; PACKETPP = $015C, AX = PPDATA
+:	ldy #$58
+:	tya
+	jsr packetpp_a1
+	lda ppdata
+	ldx ppdata+1
+	cpy #$58+4
+	bcs copy
+	cmp rrnet-$58,y
+	bne :+
+	txa
+	cmp rrnet-$58+1,y
+	bne :+
+	iny
+	iny
+	bne :-			; Always
+
+	; "If the RR-Net MK3 is connected to a clockport, then the last 4 bytes of the
+	;  EEPROM are visible by reading the last 4, normally write-only, registers."
+	; MAC_LO ^ MAC_HI ^ $55 == CHKSUM0 ?
+:	lda txcmd		; MAC_LO
+	eor txcmd+1		; MAC_HI
+	eor #$55
+	cmp txlen		; CHKSUM0
+	bne reset
+
+	; (CHKSUM0 + MAC_LO + MAC_HI) ^ $AA == CHKSUM1 ?
+	clc
+	adc txcmd		; MAC_LO
+	clc
+	adc txcmd+1		; MAC_HI
+	eor #$AA
+	cmp txlen+1		; CHKSUM1
+	bne reset
+
+	; "When both checksums match, the CS8900A should be initialized
+	;  to use the MAC Address 28:CD:4C:FF:<MAC_HI>:<MAC_LO>."
+	; AX = MAC_LO, MAC_HI
+	lda txcmd		; MAC_LO
+	ldx txcmd+1		; MAC_HI
+
+	; MAC[4], MAC[5] = AX
+	; MAC[2], MAC[3] = RR-Net[2], RR-Net[3]
+	; MAC[0], MAC[1] = RR-Net[0], RR-Net[1]
+copy:	ldy #$04
+	bne :++			; Always
+:	lda rrnet,y
+	ldx rrnet+1,y
+:	sta mac,y
+	txa
+	sta mac+1,y
+	dey
+	dey
+	bpl :--
+
+	.endif
+
+;=====================================================================
+
+	.ifdef __APPLE2__
 
 	.rodata
 
@@ -85,29 +216,31 @@ fixup:	.byte	fixup02-fixup01, fixup03-fixup02, fixup04-fixup03
 	.byte	fixup14-fixup13, fixup15-fixup14, fixup16-fixup15
 	.byte	fixup17-fixup16, fixup18-fixup17, fixup19-fixup18
 	.byte	fixup20-fixup19, fixup21-fixup20, fixup22-fixup21
-	.byte	fixup23-fixup22, fixup24-fixup23, fixup25-fixup24
-	.byte	fixup26-fixup25
+	.byte	fixup23-fixup22, fixup24-fixup23
 
 fixups	= * - fixup
 
 ;---------------------------------------------------------------------
 
-; 3 most significant nibbles are fixed up at runtime
-rxtxreg		:= $FFF0
-txcmd		:= $FFF4
-txlen		:= $FFF6
-isq		:= $FFF8
-packetpp	:= $FFFA
-ppdata		:= $FFFC
-
-	.data
+; The addresses are fixed up at runtime
+rxtxreg		:= $C080
+txcmd		:= $C084
+txlen		:= $C086
+isq		:= $C088
+packetpp	:= $C08A
+ppdata		:= $C08C
 
 ;---------------------------------------------------------------------
 
+	.data
+
 init:
-	; Save address of rxtxreg
+	; Convert slot number to slot I/O offset
+	asl
+	asl
+	asl
+	asl
 	sta reg
-	stx reg+1
 
 	; Start with first fixup location
 	lda #<(fixup01+1)
@@ -119,13 +252,9 @@ init:
 
 	; Fixup address at location
 :	lda (ptr),y
-	and #$0F
-	eor reg			; Use XOR to support C64 RR-Net
+	and #%10001111		; Allow for re-init
+	ora reg
 	sta (ptr),y
-	iny
-	lda reg+1
-	sta (ptr),y
-	dey
 
 	; Advance to next fixup location
 	inx
@@ -139,34 +268,61 @@ init:
 	inc ptr+1
 	bcs :-			; Always
 
-	; Activate C64 RR clockport in order to operate RR-Net
-	; - RR config register overlays CS8900A ISQ register
-	; - No need to distinguish as ISQ access doesn't hurt
-:
-fixup01:lda isq+1
-	ora #$01		; Set clockport bit
-fixup02:sta isq+1
+	; Check EISA registration number of Crystal Semiconductor
+	; PACKETPP = $0000, PPDATA == $630E ?
+:	lda #$00
+	tax
+	jsr packetpp_ax
+	lda #$63^$0E
+fixup01:eor ppdata
+fixup02:eor ppdata+1
+	beq reset
+	sec
+	rts
 
+	.endif
+
+;=====================================================================
+
+	.ifdef __ATARI__
+
+rxtxreg		:= $D500
+txcmd		:= $D504
+txlen		:= $D506
+isq		:= $D508
+packetpp	:= $D50A
+ppdata		:= $D50C
+
+;---------------------------------------------------------------------
+
+	.code
+
+init:
 	; Check EISA registration number of Crystal Semiconductor
 	; PACKETPP = $0000, PPDATA == $630E ?
 	lda #$00
 	tax
 	jsr packetpp_ax
 	lda #$63^$0E
-fixup03:eor ppdata
-fixup04:eor ppdata+1
-	beq :+
+	eor ppdata
+	eor ppdata+1
+	beq reset
 	sec
 	rts
 
+	.endif
+
+;=====================================================================
+
+reset:
 	; Initiate a chip-wide reset
 	; PACKETPP = $0114, PPDATA = $0040
-:	lda #$14
+	lda #$14
 	jsr packetpp_a1
 	ldy #$40
-fixup05:sty ppdata
+fixup03:sty ppdata
 :	jsr packetpp_a1
-fixup06:ldy ppdata
+fixup04:ldy ppdata
 	and #$40
 	bne :-
 
@@ -212,7 +368,7 @@ poll:
 	; PACKETPP = $0124, PPDATA & $0D00 ?
 	lda #$24
 	jsr packetpp_a1
-fixup07:lda ppdata+1
+fixup05:lda ppdata+1
 	and #$0D
 	beq :+
 
@@ -221,13 +377,13 @@ fixup07:lda ppdata+1
 	
 	; Read receiver event and discard it
 	; RXTXREG
-fixup08:ldx rxtxreg+1
-fixup09:lda rxtxreg
+fixup06:ldx rxtxreg+1
+fixup07:lda rxtxreg
 
 	; Read frame length
 	; cnt = len = RXTXREG
-fixup10:ldx rxtxreg+1
-fixup11:lda rxtxreg
+fixup08:ldx rxtxreg+1
+fixup09:lda rxtxreg
 	sta len
 	stx len+1
 	sta cnt
@@ -255,10 +411,10 @@ fixup11:lda rxtxreg
 	; Read bytes into buffer
 :	jsr adjustptr
 :
-fixup12:lda rxtxreg
+fixup10:lda rxtxreg
 	sta (ptr),y
 	iny
-fixup13:lda rxtxreg+1
+fixup11:lda rxtxreg+1
 	sta (ptr),y
 	iny
 	bne :-
@@ -282,12 +438,12 @@ send:
 	; Transmit command
 	lda #$C9
 	ldx #$00
-fixup14:sta txcmd
-fixup15:stx txcmd+1
+fixup12:sta txcmd
+fixup13:stx txcmd+1
 	lda cnt
 	ldx cnt+1
-fixup16:sta txlen
-fixup17:stx txlen+1
+fixup14:sta txlen
+fixup15:stx txlen+1
 
 	; Adjust odd frame length
 	jsr adjustcnt
@@ -299,7 +455,7 @@ fixup17:stx txlen+1
 	; PACKETPP = $0138, PPDATA & $0100 ?
 :	lda #$38
 	jsr packetpp_a1
-fixup18:lda ppdata+1
+fixup16:lda ppdata+1
 	and #$01
 	bne :+
 
@@ -318,10 +474,10 @@ fixup18:lda ppdata+1
 	; Write bytes from buffer
 :	jsr adjustptr
 :	lda (ptr),y
-fixup19:sta rxtxreg
+fixup17:sta rxtxreg
 	iny
 	lda (ptr),y
-fixup20:sta rxtxreg+1
+fixup18:sta rxtxreg+1
 	iny
 	bne :-
 	inc ptr+1
@@ -340,15 +496,15 @@ exit:
 packetpp_a1:
 	ldx #$01
 packetpp_ax:
-fixup21:sta packetpp
-fixup22:stx packetpp+1
+fixup19:sta packetpp
+fixup20:stx packetpp+1
 	rts
 
 ;---------------------------------------------------------------------
 
 ppdata_ax:
-fixup23:sta ppdata
-fixup24:stx ppdata+1
+fixup21:sta ppdata
+fixup22:stx ppdata+1
 	rts
 
 ;---------------------------------------------------------------------
@@ -357,9 +513,9 @@ skipframe:
 	; PACKETPP = $0102, PPDATA = PPDATA | $0040
 	lda #$02
 	jsr packetpp_a1
-fixup25:lda ppdata
+fixup23:lda ppdata
 	ora #$40
-fixup26:sta ppdata
+fixup24:sta ppdata
 	rts
 
 ;---------------------------------------------------------------------

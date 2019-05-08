@@ -71,7 +71,7 @@ ethernet_init(void)
 
   module->buffer = uip_buf;
   module->buffer_size = UIP_BUFSIZE;
-  if(module->init(config.ethernet.addr)) {
+  if(module->init(config.ethernet.param)) {
     #define _stringize(arg) #arg
     #define  stringize(arg) _stringize(arg)
     log_message(stringize(STATIC_DRIVER), ": No hardware");
@@ -110,7 +110,7 @@ ethernet_init(void)
 
   module->buffer = uip_buf;
   module->buffer_size = UIP_BUFSIZE;
-  if(module->init(config.ethernet.addr)) {
+  if(module->init(config.ethernet.param)) {
     log_message(config.ethernet.name, ": No hardware");
     error_exit();
   }

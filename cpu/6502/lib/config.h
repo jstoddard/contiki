@@ -42,7 +42,7 @@ extern struct {
   uip_ipaddr_t resolvaddr;
   union {
     struct {
-      uint16_t addr;
+      uint16_t param;
 #ifndef STATIC_DRIVER
       char     name[12+1];
 #endif /* !STATIC_DRIVER */

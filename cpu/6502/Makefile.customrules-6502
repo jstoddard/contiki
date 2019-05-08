@@ -17,6 +17,6 @@ CUSTOM_RULE_LINK = 1
 	$(TRACE_AS)
 	$(Q)$(AS) $(ASFLAGS) -o $@ $<
 
-%.eth: %.o
+%.$(TARGET): %.o
 	$(TRACE_LD)
 	$(Q)$(LD) -o $@ -t module -m $@.map $<

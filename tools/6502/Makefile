@@ -112,9 +112,9 @@ ifdef SLIP
 	java -jar $(AC) -p  $@ contiki.cfg        bin 0 < default.cfg
 else
 	java -jar $(AC) -p  $@ contiki.cfg        bin 0 < ../apple2enh/default.cfg
-	java -jar $(AC) -p  $@ cs8900a.eth        rel 0 < ../../cpu/6502/ethconfig/cs8900a.eth
-	java -jar $(AC) -p  $@ lan91c96.eth       rel 0 < ../../cpu/6502/ethconfig/lan91c96.eth
-	java -jar $(AC) -p  $@ w5100.eth          rel 0 < ../../cpu/6502/ethconfig/w5100.eth
+	java -jar $(AC) -p  $@ cs8900a.eth        rel 0 < ../../cpu/6502/ethconfig/cs8900a.apple2enh
+	java -jar $(AC) -p  $@ lan91c96.eth       rel 0 < ../../cpu/6502/ethconfig/lan91c96.apple2enh
+	java -jar $(AC) -p  $@ w5100.eth          rel 0 < ../../cpu/6502/ethconfig/w5100.apple2enh
 endif
 
 contiki-apple2-2.dsk: apple2enh-makes
@@ -130,9 +130,9 @@ ifdef SLIP
 	java -jar $(AC) -p  $@ contiki.cfg        bin 0 < default.cfg
 else
 	java -jar $(AC) -p  $@ contiki.cfg        bin 0 < ../apple2enh/default.cfg
-	java -jar $(AC) -p  $@ cs8900a.eth        rel 0 < ../../cpu/6502/ethconfig/cs8900a.eth
-	java -jar $(AC) -p  $@ lan91c96.eth       rel 0 < ../../cpu/6502/ethconfig/lan91c96.eth
-	java -jar $(AC) -p  $@ w5100.eth          rel 0 < ../../cpu/6502/ethconfig/w5100.eth
+	java -jar $(AC) -p  $@ cs8900a.eth        rel 0 < ../../cpu/6502/ethconfig/cs8900a.apple2enh
+	java -jar $(AC) -p  $@ lan91c96.eth       rel 0 < ../../cpu/6502/ethconfig/lan91c96.apple2enh
+	java -jar $(AC) -p  $@ w5100.eth          rel 0 < ../../cpu/6502/ethconfig/w5100.apple2enh
 endif
 
 contiki-apple2-3.dsk: apple2enh-makes
@@ -150,9 +150,9 @@ ifdef SLIP
 	java -jar $(AC) -p  $@ contiki.cfg        bin 0 < default.cfg
 else
 	java -jar $(AC) -p  $@ contiki.cfg        bin 0 < ../apple2enh/default.cfg
-	java -jar $(AC) -p  $@ cs8900a.eth        rel 0 < ../../cpu/6502/ethconfig/cs8900a.eth
-	java -jar $(AC) -p  $@ lan91c96.eth       rel 0 < ../../cpu/6502/ethconfig/lan91c96.eth
-	java -jar $(AC) -p  $@ w5100.eth          rel 0 < ../../cpu/6502/ethconfig/w5100.eth
+	java -jar $(AC) -p  $@ cs8900a.eth        rel 0 < ../../cpu/6502/ethconfig/cs8900a.apple2enh
+	java -jar $(AC) -p  $@ lan91c96.eth       rel 0 < ../../cpu/6502/ethconfig/lan91c96.apple2enh
+	java -jar $(AC) -p  $@ w5100.eth          rel 0 < ../../cpu/6502/ethconfig/w5100.apple2enh
 endif
 	java -jar $(AC) -p  $@ index.htm          bin 0 < ../../examples/webserver/httpd-cfs/index.htm
 	java -jar $(AC) -p  $@ backgrnd.gif       bin 0 < ../../examples/webserver/httpd-cfs/backgrnd.gif
@@ -180,9 +180,9 @@ ifdef SLIP
 	java -jar $(AC) -p  $@ contiki.cfg        bin 0 < default.cfg
 else
 	java -jar $(AC) -p  $@ contiki.cfg        bin 0 < ../apple2enh/default.cfg
-	java -jar $(AC) -p  $@ cs8900a.eth        rel 0 < ../../cpu/6502/ethconfig/cs8900a.eth
-	java -jar $(AC) -p  $@ lan91c96.eth       rel 0 < ../../cpu/6502/ethconfig/lan91c96.eth
-	java -jar $(AC) -p  $@ w5100.eth          rel 0 < ../../cpu/6502/ethconfig/w5100.eth
+	java -jar $(AC) -p  $@ cs8900a.eth        rel 0 < ../../cpu/6502/ethconfig/cs8900a.apple2enh
+	java -jar $(AC) -p  $@ lan91c96.eth       rel 0 < ../../cpu/6502/ethconfig/lan91c96.apple2enh
+	java -jar $(AC) -p  $@ w5100.eth          rel 0 < ../../cpu/6502/ethconfig/w5100.apple2enh
 endif
 	java -jar $(AC) -p  $@ index.htm          bin 0 < ../../examples/webserver/httpd-cfs/index.htm
 	java -jar $(AC) -p  $@ backgrnd.gif       bin 0 < ../../examples/webserver/httpd-cfs/backgrnd.gif
@@ -197,67 +197,87 @@ atari: contiki-atari.zip
 atari-clean: atarixl-cleanmakes
 	rm -f contiki-atari.zip contiki-atari-1.atr contiki-atari-2.atr contiki-atari-3.atr contiki-atari.atr
 
-contiki-atari.zip: contiki-atari-1.atr contiki-atari-2.atr contiki-atari-3.atr contiki-atari.atr
+contiki-atari.zip: contiki-atari-1.atr contiki-atari-2.atr contiki-atari-3.atr contiki-atari-4.atr contiki-atari-5.atr contiki-atari.atr
 
 contiki-atari-1.atr: atarixl-makes
 	mkdir atr
-	cp ../atarixl/dos25/dos.sys                     atr/dos.sys
-	cp ../atarixl/dos25/dup.sys                     atr/dup.sys
+	cp ../atarixl/dos25/dos.sys                         atr/dos.sys
+	cp ../atarixl/dos25/dup.sys                         atr/dup.sys
+	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl atr/$(DEV)confi.com
+	cp ../../cpu/6502/ipconfig/ipconfig.atarixl         atr/ipconfig.com
+	cp ../../examples/webbrowser/webbrowser.atarixl     atr/webbrows.com
 ifdef SLIP
-	cp ../../cpu/6502/serconfig/serconfig.atarixl   atr/serconfi.com
-endif
-	cp ../../cpu/6502/ipconfig/ipconfig.atarixl     atr/ipconfig.com
-	cp ../../examples/webbrowser/webbrowser.atarixl atr/webbrows.com
-	cp ../../examples/wget/wget.atarixl             atr/wget.com
-ifdef SLIP
-	cp default.cfg                                  atr/contiki.cfg
+	cp default.cfg                                      atr/contiki.cfg
 else
-	cp ../atarixl/default.cfg                       atr/contiki.cfg
+	cp ../atarixl/default.cfg                           atr/contiki.cfg
+	cp ../../cpu/6502/ethconfig/cs8900a.atarixl         atr/cs8900a.eth
+	cp ../../cpu/6502/ethconfig/w5100.atarixl           atr/w5100.eth
 endif
-	cp $(CC65)/atarixl/drv/mou/atrxst.mou           atr/contiki.mou
-	cp $(CC65)/atarixl/drv/mou/atrxami.mou          atr/ami.mou
-	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou          atr/joy.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou          atr/trk.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtt.mou           atr/tt.mou
+	cp $(CC65)/atarixl/drv/mou/atrxst.mou               atr/contiki.mou
+	cp $(CC65)/atarixl/drv/mou/atrxami.mou              atr/ami.mou
+	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou              atr/joy.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou              atr/trk.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtt.mou               atr/tt.mou
 	$(DIR2ATR) -b Dos25 1040 $@ atr
 	rm -r atr
 
 contiki-atari-2.atr: atarixl-makes
 	mkdir atr
-	cp ../atarixl/dos25/dos.sys                   atr/dos.sys
-	cp ../atarixl/dos25/dup.sys                   atr/dup.sys
+	cp ../atarixl/dos25/dos.sys                         atr/dos.sys
+	cp ../atarixl/dos25/dup.sys                         atr/dup.sys
+	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl atr/$(DEV)confi.com
+	cp ../../cpu/6502/ipconfig/ipconfig.atarixl         atr/ipconfig.com
+	cp ../../examples/wget/wget.atarixl                 atr/wget.com
 ifdef SLIP
-	cp ../../cpu/6502/serconfig/serconfig.atarixl atr/serconfi.com
-endif
-	cp ../../cpu/6502/ipconfig/ipconfig.atarixl   atr/ipconfig.com
-	cp ../../examples/irc/irc-client.atarixl      atr/irc.com
-ifdef SLIP
-	cp default.cfg                                atr/contiki.cfg
+	cp default.cfg                                      atr/contiki.cfg
 else
-	cp ../atarixl/default.cfg                     atr/contiki.cfg
+	cp ../atarixl/default.cfg                           atr/contiki.cfg
+	cp ../../cpu/6502/ethconfig/cs8900a.atarixl         atr/cs8900a.eth
+	cp ../../cpu/6502/ethconfig/w5100.atarixl           atr/w5100.eth
 endif
-	cp $(CC65)/atarixl/drv/mou/atrxst.mou         atr/contiki.mou
-	cp $(CC65)/atarixl/drv/mou/atrxami.mou        atr/ami.mou
-	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou        atr/joy.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou        atr/trk.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtt.mou         atr/tt.mou
+	cp $(CC65)/atarixl/drv/mou/atrxst.mou               atr/contiki.mou
+	cp $(CC65)/atarixl/drv/mou/atrxami.mou              atr/ami.mou
+	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou              atr/joy.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou              atr/trk.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtt.mou               atr/tt.mou
 	$(DIR2ATR) -b Dos25 1040 $@ atr
 	rm -r atr
 
 contiki-atari-3.atr: atarixl-makes
 	mkdir atr
+	cp ../atarixl/dos25/dos.sys                         atr/dos.sys
+	cp ../atarixl/dos25/dup.sys                         atr/dup.sys
+	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl atr/$(DEV)confi.com
+	cp ../../cpu/6502/ipconfig/ipconfig.atarixl         atr/ipconfig.com
+	cp ../../examples/irc/irc-client.atarixl            atr/irc.com
+ifdef SLIP
+	cp default.cfg                                      atr/contiki.cfg
+else
+	cp ../atarixl/default.cfg                           atr/contiki.cfg
+	cp ../../cpu/6502/ethconfig/cs8900a.atarixl         atr/cs8900a.eth
+	cp ../../cpu/6502/ethconfig/w5100.atarixl           atr/w5100.eth
+endif
+	cp $(CC65)/atarixl/drv/mou/atrxst.mou               atr/contiki.mou
+	cp $(CC65)/atarixl/drv/mou/atrxami.mou              atr/ami.mou
+	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou              atr/joy.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou              atr/trk.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtt.mou               atr/tt.mou
+	$(DIR2ATR) -b Dos25 1040 $@ atr
+	rm -r atr
+
+contiki-atari-4.atr: atarixl-makes
+	mkdir atr
 	cp ../atarixl/dos25/dos.sys                           atr/dos.sys
 	cp ../atarixl/dos25/dup.sys                           atr/dup.sys
-ifdef SLIP
-	cp ../../cpu/6502/serconfig/serconfig.atarixl         atr/serconfi.com
-endif
+	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl   atr/$(DEV)confi.com
 	cp ../../cpu/6502/ipconfig/ipconfig.atarixl           atr/ipconfig.com
 	cp ../../examples/webserver/webserver-example.atarixl atr/webserv.com
-	cp ../../examples/telnet-server/telnet-server.atarixl atr/telnetd.com
 ifdef SLIP
 	cp default.cfg                                        atr/contiki.cfg
 else
 	cp ../atarixl/default.cfg                             atr/contiki.cfg
+	cp ../../cpu/6502/ethconfig/cs8900a.atarixl           atr/cs8900a.eth
+	cp ../../cpu/6502/ethconfig/w5100.atarixl             atr/w5100.eth
 endif
 	cp $(CC65)/atarixl/drv/mou/atrxst.mou                 atr/contiki.mou
 	cp $(CC65)/atarixl/drv/mou/atrxami.mou                atr/ami.mou
@@ -271,13 +291,33 @@ endif
 	$(DIR2ATR) -b Dos25 1040 $@ atr
 	rm -r atr
 
+contiki-atari-5.atr: atarixl-makes
+	mkdir atr
+	cp ../atarixl/dos25/dos.sys                           atr/dos.sys
+	cp ../atarixl/dos25/dup.sys                           atr/dup.sys
+	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl   atr/$(DEV)confi.com
+	cp ../../cpu/6502/ipconfig/ipconfig.atarixl           atr/ipconfig.com
+	cp ../../examples/telnet-server/telnet-server.atarixl atr/telnetd.com
+ifdef SLIP
+	cp default.cfg                                        atr/contiki.cfg
+else
+	cp ../atarixl/default.cfg                             atr/contiki.cfg
+	cp ../../cpu/6502/ethconfig/cs8900a.atarixl           atr/cs8900a.eth
+	cp ../../cpu/6502/ethconfig/w5100.atarixl             atr/w5100.eth
+endif
+	cp $(CC65)/atarixl/drv/mou/atrxst.mou                 atr/contiki.mou
+	cp $(CC65)/atarixl/drv/mou/atrxami.mou                atr/ami.mou
+	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou                atr/joy.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou                atr/trk.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtt.mou                 atr/tt.mou
+	$(DIR2ATR) -b Dos25 1040 $@ atr
+	rm -r atr
+
 contiki-atari.atr: atarixl-makes
 	mkdir atr
 	cp ../atarixl/mydos4534/dos.sys                       atr/dos.sys
 	cp ../atarixl/mydos4534/dup.sys                       atr/dup.sys
-ifdef SLIP
-	cp ../../cpu/6502/serconfig/serconfig.atarixl         atr/serconfi.com
-endif
+	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl   atr/$(DEV)confi.com
 	cp ../../cpu/6502/ipconfig/ipconfig.atarixl           atr/ipconfig.com
 	cp ../../examples/webbrowser/webbrowser.atarixl       atr/webbrows.com
 	cp ../../examples/wget/wget.atarixl                   atr/wget.com
@@ -288,6 +328,8 @@ ifdef SLIP
 	cp default.cfg                                        atr/contiki.cfg
 else
 	cp ../atarixl/default.cfg                             atr/contiki.cfg
+	cp ../../cpu/6502/ethconfig/cs8900a.atarixl           atr/cs8900a.eth
+	cp ../../cpu/6502/ethconfig/w5100.atarixl             atr/w5100.eth
 endif
 	cp $(CC65)/atarixl/drv/mou/atrxst.mou                 atr/contiki.mou
 	cp $(CC65)/atarixl/drv/mou/atrxami.mou                atr/ami.mou
@@ -322,8 +364,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                    contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c64/default.cfg                             contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth           cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth          lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c64           cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c64          lan91c96.eth,s >$(NULLDEV)
 endif
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-1351.mou               contiki.mou,s  >$(NULLDEV)
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-inkwell.mou            inkwell.mou,s  >$(NULLDEV)
@@ -340,8 +382,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                  contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c64/default.cfg                           contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth         cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth        lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c64         cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c64        lan91c96.eth,s >$(NULLDEV)
 endif
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-1351.mou             contiki.mou,s  >$(NULLDEV)
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-inkwell.mou          inkwell.mou,s  >$(NULLDEV)
@@ -358,8 +400,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                     contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c64/default.cfg                              contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth            cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth           lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c64            cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c64           lan91c96.eth,s >$(NULLDEV)
 endif
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-1351.mou                contiki.mou,s  >$(NULLDEV)
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-inkwell.mou             inkwell.mou,s  >$(NULLDEV)
@@ -385,8 +427,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                     contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c64/default.cfg                              contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth            cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth           lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c64            cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c64           lan91c96.eth,s >$(NULLDEV)
 endif
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-1351.mou                contiki.mou,s  >$(NULLDEV)
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-inkwell.mou             inkwell.mou,s  >$(NULLDEV)
@@ -412,8 +454,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                     contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c64/default.cfg                              contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth            cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth           lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c64            cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c64           lan91c96.eth,s >$(NULLDEV)
 endif
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-1351.mou                contiki.mou,s  >$(NULLDEV)
 	$(C1541) -attach $@ -write $(CC65)/c64/drv/mou/c64-inkwell.mou             inkwell.mou,s  >$(NULLDEV)
@@ -445,8 +487,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                     contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c128/default.cfg                             contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth            cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth           lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c128           cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c128          lan91c96.eth,s >$(NULLDEV)
 endif
 
 contiki-c128-2.d64: c128-makes
@@ -459,8 +501,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                     contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c128/default.cfg                             contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth            cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth           lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c128           cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c128          lan91c96.eth,s >$(NULLDEV)
 endif
 	$(C1541) -attach $@ -write ../../examples/webserver/httpd-cfs/index.htm    index.htm,s    >$(NULLDEV)
 	$(C1541) -attach $@ -write ../../examples/webserver/httpd-cfs/backgrnd.gif backgrnd.gif,s >$(NULLDEV)
@@ -480,8 +522,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                     contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c128/default.cfg                             contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth            cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth           lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c128           cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c128          lan91c96.eth,s >$(NULLDEV)
 endif
 	$(C1541) -attach $@ -write ../../examples/webserver/httpd-cfs/index.htm    index.htm,s    >$(NULLDEV)
 	$(C1541) -attach $@ -write ../../examples/webserver/httpd-cfs/backgrnd.gif backgrnd.gif,s >$(NULLDEV)
@@ -501,8 +543,8 @@ ifdef SLIP
 	$(C1541) -attach $@ -write default.cfg                                     contiki.cfg,s  >$(NULLDEV)
 else
 	$(C1541) -attach $@ -write ../c128/default.cfg                             contiki.cfg,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.eth            cs8900a.eth,s  >$(NULLDEV)
-	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.eth           lan91c96.eth,s >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/cs8900a.c128           cs8900a.eth,s  >$(NULLDEV)
+	$(C1541) -attach $@ -write ../../cpu/6502/ethconfig/lan91c96.c128          lan91c96.eth,s >$(NULLDEV)
 endif
 	$(C1541) -attach $@ -write ../../examples/webserver/httpd-cfs/index.htm    index.htm,s    >$(NULLDEV)
 	$(C1541) -attach $@ -write ../../examples/webserver/httpd-cfs/backgrnd.gif backgrnd.gif,s >$(NULLDEV)
