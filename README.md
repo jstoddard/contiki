@@ -7,7 +7,7 @@ Contiki OS for 6502 based computers is available for four target systems. **Sele
 Contiki requires Ethernet hardware. There's no support for TCP/IP over serial connections whatsoever in the standard build. There's experimental support for SLIP instead of Ethernet when building with the environment variable `SLIP` defined.
 
 On the C64 and the C128 there are two supported Ethernet devices:
-- The [RR-Net](http://wiki.icomp.de/wiki/RR-Net) - emulated by [VICE](https://vice-emu.sourceforge.net/)
+- The [RR-Net](http://wiki.icomp.de/wiki/RR-Net) - emulated by [VICE](https://vice-emu.sourceforge.io/)
 - The [ETH64](https://www.ide64.org/eth64.html)
 
 On the Apple //e there are three supported Ethernet cards:
