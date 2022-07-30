@@ -16,4 +16,4 @@ On the Apple //e there are three supported Ethernet cards:
 - The [LANceGS](https://web.archive.org/web/20010331001718/http://lancegs.a2central.com:80/)
 
 On the ATARI XL there is one supported Ethernet device:
-- The [Dragon Cart](https://www.atari8ethernet.com/) - emulated by [Altirra](http://www.virtualdub.org/altirra.html)
+- The [Dragon Cart](https://www.atari8ethernet.com/) - emulated by [Altirra](https://www.virtualdub.org/altirra.html)
