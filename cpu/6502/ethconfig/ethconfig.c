@@ -15,8 +15,7 @@ static struct {
   {"LANceGS",     "lan91c96.eth"}
 #endif
 #ifdef __ATARI__
-  {"Dragon Cart", "cs8900a.eth" },
-  {"Dracarys",    "w5100.eth"   }
+  {"Dragon Cart", "cs8900a.eth" }
 #endif
 #ifdef __CBM__
   {"RR-Net",      "cs8900a.eth" },
@@ -76,13 +75,6 @@ main(void)
 #ifdef __APPLE2__
   printf("Slot (1-7)\n");
   param = choose(7);
-#endif
-
-#ifdef __ATARI__
-  if(d == 1) {
-    printf("PBI device ID (1-8)\n");
-    param = choose(8);
-  }
 #endif
 
   f = cfs_open("contiki.cfg", CFS_WRITE);

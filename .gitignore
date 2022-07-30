@@ -20,10 +20,6 @@
 *.exp5438
 *.mbxxx
 *.win32
-*.apple2enh
-*.atarixl
-*.c128
-*.c64
 *.cc2538dk
 *.zoul
 *.jn516x
@@ -80,7 +76,6 @@ contiki-cc2530dk.lib
 *.dsc
 
 #cc65 build artifacts
-*.s
 *.eth
 *.dsk
 *.po

@@ -197,87 +197,67 @@ atari: contiki-atari.zip
 atari-clean: atarixl-cleanmakes
 	rm -f contiki-atari.zip contiki-atari-1.atr contiki-atari-2.atr contiki-atari-3.atr contiki-atari.atr
 
-contiki-atari.zip: contiki-atari-1.atr contiki-atari-2.atr contiki-atari-3.atr contiki-atari-4.atr contiki-atari-5.atr contiki-atari.atr
+contiki-atari.zip: contiki-atari-1.atr contiki-atari-2.atr contiki-atari-3.atr contiki-atari.atr
 
 contiki-atari-1.atr: atarixl-makes
 	mkdir atr
-	cp ../atarixl/dos25/dos.sys                         atr/dos.sys
-	cp ../atarixl/dos25/dup.sys                         atr/dup.sys
-	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl atr/$(DEV)confi.com
-	cp ../../cpu/6502/ipconfig/ipconfig.atarixl         atr/ipconfig.com
-	cp ../../examples/webbrowser/webbrowser.atarixl     atr/webbrows.com
+	cp ../atarixl/dos25/dos.sys                     atr/dos.sys
+	cp ../atarixl/dos25/dup.sys                     atr/dup.sys
 ifdef SLIP
-	cp default.cfg                                      atr/contiki.cfg
-else
-	cp ../atarixl/default.cfg                           atr/contiki.cfg
-	cp ../../cpu/6502/ethconfig/cs8900a.atarixl         atr/cs8900a.eth
-	cp ../../cpu/6502/ethconfig/w5100.atarixl           atr/w5100.eth
+	cp ../../cpu/6502/serconfig/serconfig.atarixl   atr/serconfi.com
 endif
-	cp $(CC65)/atarixl/drv/mou/atrxst.mou               atr/contiki.mou
-	cp $(CC65)/atarixl/drv/mou/atrxami.mou              atr/ami.mou
-	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou              atr/joy.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou              atr/trk.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtt.mou               atr/tt.mou
+	cp ../../cpu/6502/ipconfig/ipconfig.atarixl     atr/ipconfig.com
+	cp ../../examples/webbrowser/webbrowser.atarixl atr/webbrows.com
+	cp ../../examples/wget/wget.atarixl             atr/wget.com
+ifdef SLIP
+	cp default.cfg                                  atr/contiki.cfg
+else
+	cp ../atarixl/default.cfg                       atr/contiki.cfg
+endif
+	cp $(CC65)/atarixl/drv/mou/atrxst.mou           atr/contiki.mou
+	cp $(CC65)/atarixl/drv/mou/atrxami.mou          atr/ami.mou
+	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou          atr/joy.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou          atr/trk.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtt.mou           atr/tt.mou
 	$(DIR2ATR) -b Dos25 1040 $@ atr
 	rm -r atr
 
 contiki-atari-2.atr: atarixl-makes
 	mkdir atr
-	cp ../atarixl/dos25/dos.sys                         atr/dos.sys
-	cp ../atarixl/dos25/dup.sys                         atr/dup.sys
-	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl atr/$(DEV)confi.com
-	cp ../../cpu/6502/ipconfig/ipconfig.atarixl         atr/ipconfig.com
-	cp ../../examples/wget/wget.atarixl                 atr/wget.com
+	cp ../atarixl/dos25/dos.sys                   atr/dos.sys
+	cp ../atarixl/dos25/dup.sys                   atr/dup.sys
 ifdef SLIP
-	cp default.cfg                                      atr/contiki.cfg
-else
-	cp ../atarixl/default.cfg                           atr/contiki.cfg
-	cp ../../cpu/6502/ethconfig/cs8900a.atarixl         atr/cs8900a.eth
-	cp ../../cpu/6502/ethconfig/w5100.atarixl           atr/w5100.eth
+	cp ../../cpu/6502/serconfig/serconfig.atarixl atr/serconfi.com
 endif
-	cp $(CC65)/atarixl/drv/mou/atrxst.mou               atr/contiki.mou
-	cp $(CC65)/atarixl/drv/mou/atrxami.mou              atr/ami.mou
-	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou              atr/joy.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou              atr/trk.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtt.mou               atr/tt.mou
+	cp ../../cpu/6502/ipconfig/ipconfig.atarixl   atr/ipconfig.com
+	cp ../../examples/irc/irc-client.atarixl      atr/irc.com
+ifdef SLIP
+	cp default.cfg                                atr/contiki.cfg
+else
+	cp ../atarixl/default.cfg                     atr/contiki.cfg
+endif
+	cp $(CC65)/atarixl/drv/mou/atrxst.mou         atr/contiki.mou
+	cp $(CC65)/atarixl/drv/mou/atrxami.mou        atr/ami.mou
+	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou        atr/joy.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou        atr/trk.mou
+	cp $(CC65)/atarixl/drv/mou/atrxtt.mou         atr/tt.mou
 	$(DIR2ATR) -b Dos25 1040 $@ atr
 	rm -r atr
 
 contiki-atari-3.atr: atarixl-makes
 	mkdir atr
-	cp ../atarixl/dos25/dos.sys                         atr/dos.sys
-	cp ../atarixl/dos25/dup.sys                         atr/dup.sys
-	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl atr/$(DEV)confi.com
-	cp ../../cpu/6502/ipconfig/ipconfig.atarixl         atr/ipconfig.com
-	cp ../../examples/irc/irc-client.atarixl            atr/irc.com
-ifdef SLIP
-	cp default.cfg                                      atr/contiki.cfg
-else
-	cp ../atarixl/default.cfg                           atr/contiki.cfg
-	cp ../../cpu/6502/ethconfig/cs8900a.atarixl         atr/cs8900a.eth
-	cp ../../cpu/6502/ethconfig/w5100.atarixl           atr/w5100.eth
-endif
-	cp $(CC65)/atarixl/drv/mou/atrxst.mou               atr/contiki.mou
-	cp $(CC65)/atarixl/drv/mou/atrxami.mou              atr/ami.mou
-	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou              atr/joy.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou              atr/trk.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtt.mou               atr/tt.mou
-	$(DIR2ATR) -b Dos25 1040 $@ atr
-	rm -r atr
-
-contiki-atari-4.atr: atarixl-makes
-	mkdir atr
 	cp ../atarixl/dos25/dos.sys                           atr/dos.sys
 	cp ../atarixl/dos25/dup.sys                           atr/dup.sys
-	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl   atr/$(DEV)confi.com
+ifdef SLIP
+	cp ../../cpu/6502/serconfig/serconfig.atarixl         atr/serconfi.com
+endif
 	cp ../../cpu/6502/ipconfig/ipconfig.atarixl           atr/ipconfig.com
 	cp ../../examples/webserver/webserver-example.atarixl atr/webserv.com
+	cp ../../examples/telnet-server/telnet-server.atarixl atr/telnetd.com
 ifdef SLIP
 	cp default.cfg                                        atr/contiki.cfg
 else
 	cp ../atarixl/default.cfg                             atr/contiki.cfg
-	cp ../../cpu/6502/ethconfig/cs8900a.atarixl           atr/cs8900a.eth
-	cp ../../cpu/6502/ethconfig/w5100.atarixl             atr/w5100.eth
 endif
 	cp $(CC65)/atarixl/drv/mou/atrxst.mou                 atr/contiki.mou
 	cp $(CC65)/atarixl/drv/mou/atrxami.mou                atr/ami.mou
@@ -291,33 +271,13 @@ endif
 	$(DIR2ATR) -b Dos25 1040 $@ atr
 	rm -r atr
 
-contiki-atari-5.atr: atarixl-makes
-	mkdir atr
-	cp ../atarixl/dos25/dos.sys                           atr/dos.sys
-	cp ../atarixl/dos25/dup.sys                           atr/dup.sys
-	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl   atr/$(DEV)confi.com
-	cp ../../cpu/6502/ipconfig/ipconfig.atarixl           atr/ipconfig.com
-	cp ../../examples/telnet-server/telnet-server.atarixl atr/telnetd.com
-ifdef SLIP
-	cp default.cfg                                        atr/contiki.cfg
-else
-	cp ../atarixl/default.cfg                             atr/contiki.cfg
-	cp ../../cpu/6502/ethconfig/cs8900a.atarixl           atr/cs8900a.eth
-	cp ../../cpu/6502/ethconfig/w5100.atarixl             atr/w5100.eth
-endif
-	cp $(CC65)/atarixl/drv/mou/atrxst.mou                 atr/contiki.mou
-	cp $(CC65)/atarixl/drv/mou/atrxami.mou                atr/ami.mou
-	cp $(CC65)/atarixl/drv/mou/atrxjoy.mou                atr/joy.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtrk.mou                atr/trk.mou
-	cp $(CC65)/atarixl/drv/mou/atrxtt.mou                 atr/tt.mou
-	$(DIR2ATR) -b Dos25 1040 $@ atr
-	rm -r atr
-
 contiki-atari.atr: atarixl-makes
 	mkdir atr
 	cp ../atarixl/mydos4534/dos.sys                       atr/dos.sys
 	cp ../atarixl/mydos4534/dup.sys                       atr/dup.sys
-	cp ../../cpu/6502/$(DEV)config/$(DEV)config.atarixl   atr/$(DEV)confi.com
+ifdef SLIP
+	cp ../../cpu/6502/serconfig/serconfig.atarixl         atr/serconfi.com
+endif
 	cp ../../cpu/6502/ipconfig/ipconfig.atarixl           atr/ipconfig.com
 	cp ../../examples/webbrowser/webbrowser.atarixl       atr/webbrows.com
 	cp ../../examples/wget/wget.atarixl                   atr/wget.com
@@ -328,8 +288,6 @@ ifdef SLIP
 	cp default.cfg                                        atr/contiki.cfg
 else
 	cp ../atarixl/default.cfg                             atr/contiki.cfg
-	cp ../../cpu/6502/ethconfig/cs8900a.atarixl           atr/cs8900a.eth
-	cp ../../cpu/6502/ethconfig/w5100.atarixl             atr/w5100.eth
 endif
 	cp $(CC65)/atarixl/drv/mou/atrxst.mou                 atr/contiki.mou
 	cp $(CC65)/atarixl/drv/mou/atrxami.mou                atr/ami.mou
