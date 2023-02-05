@@ -177,6 +177,9 @@ parse_line(void)
       petsciiconv_toascii(&line[4], strlen(&line[4]));
       ircc_actionmsg(&s, &line[4]);
       ircc_text_output(&s, "*", &line[4]);
+    } else if (strncmp(&line[1], "msg", 3) == 0) {
+      petsciiconv_toascii(&line[5], strlen(&line[5]));
+      ircc_privmsg(&s, &line[5]);
     } else {
       ircc_text_output(&s, &line[1], "Not implemented");
       ircc_sent(&s);

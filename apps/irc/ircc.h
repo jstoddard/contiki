@@ -47,6 +47,7 @@ struct ircc_state {
   
   char *msg;
   char channel[32];
+  char recpt[32];
   char outputbuf[200];
   char inputbuf[400];
   char *nick;
@@ -64,6 +65,7 @@ void ircc_join(struct ircc_state *s, char *channel);
 void ircc_part(struct ircc_state *s);
 void ircc_list(struct ircc_state *s);
 void ircc_msg(struct ircc_state *s, char *msg);
+void ircc_privmsg(struct ircc_state *s, char *msg);
 void ircc_actionmsg(struct ircc_state *s, char *msg);
 
 void ircc_sent(struct ircc_state *s);
